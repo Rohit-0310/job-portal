@@ -23,12 +23,32 @@ const jobSchema = new mongoose.Schema(
 const Job = mongoose.model("job", jobSchema);
 
 
+//company
+const companySchema = new mongoose.Schema(
+    {
+      comapny_name: { type: String, required: true },
+      aval_job: { type: Number, required: false },
+      body: {type:String, required:true},
+      job_id: {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: "job",
+          required: true,
+      }
+    },
+    {
+      versionKey: false,
+      timestamps: true,
+    }
+  );
+  
+  const Company = mongoose.model("company", companySchema);
+
 
 const app = express();
 
 app.use(express.json());
 
-
+//JObs API------------------------
 app.post("/jobs", async (req, res) => {
   try {
     const job = await Job.create(req.body);
@@ -49,6 +69,27 @@ app.get("/jobs", async (req, res) => {
   }
 });
 
+
+//Company API------------------------
+app.post("/company", async (req, res) => {
+    try {
+      const company = await Company.create(req.body);
+  
+      return res.status(201).send(company);
+    } catch (e) {
+      return res.status(500).json({ message: e.message, status: "Failed" });
+    }
+  });
+  
+  app.get("/company", async (req, res) => {
+    try {
+      const company = await Company.find().lean().exec();
+  
+      return res.send({ company });
+    } catch (e) {
+      return res.status(500).json({ message: e.message, status: "Failed" });
+    }
+  });
 
 
 app.listen(4455, async function () {
