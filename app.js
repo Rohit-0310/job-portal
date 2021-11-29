@@ -71,6 +71,29 @@ const citySchema = new mongoose.Schema(
 
 
 
+//noticeperiod ---------------
+
+const noticeperiodSchema = new mongoose.Schema(
+    {
+        job_name: { type: String, required: true ,unique:true},
+        notice_period: { type: Number, required: true },
+        job_id: {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: "job",
+          required: true,
+      }
+    },
+    {
+      versionKey: false,
+      timestamps: true,
+    }
+  );
+  
+  const Noticeperiod = mongoose.model("noticeperiod", noticeperiodSchema);
+
+
+
+  
 
 
 
@@ -221,6 +244,56 @@ app.post("/citys", async (req, res) => {
     
 
 
+
+
+
+
+
+
+        //noticeperiod API------------------------
+//post------------------
+
+app.post("/noticeperiods", async (req, res) => {
+    try {
+      const noticeperiod = await Noticeperiod.create(req.body);
+  
+      return res.status(201).send(noticeperiod);
+    } catch (e) {
+      return res.status(500).json({ message: e.message, status: "Failed" });
+    }
+  });
+  //get All-------------------------------------
+  app.get("/noticeperiods", async (req, res) => {
+    try {
+      const noticeperiods = await Noticeperiod.find().lean().exec();
+  
+      return res.send( noticeperiods );
+    } catch (e) {
+      return res.status(500).json({ message: e.message, status: "Failed" });
+    }
+  });
+  //get single------------------------
+  app.get("/noticeperiods/:id", async (req, res) => {
+    try {
+      const noticeperiod = await Noticeperiod.findId(req.params.id).lean().exec();
+  
+      return res.send(noticeperiod);
+    } catch (e) {
+      return res.status(500).json({ message: e.message, status: "Failed" });
+    }
+  });
+
+    //Update----------------
+
+    app.patch("/noticeperiods/:id", async (req, res) => {
+        try {
+          const noticeperiod = await Noticeperiod.findByIdAndUpdate(req.params.id, req.body, {new:true}).lean().exec();
+      
+          return res.status(200).send(noticeperiod);
+        } catch (e) {
+          return res.status(500).json({ message: e.message, status: "Failed" });
+        }
+      });
 
 
 
