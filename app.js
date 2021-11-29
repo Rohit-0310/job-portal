@@ -28,7 +28,7 @@ const companySchema = new mongoose.Schema(
     {
       comapny_name: { type: String, required: true },
       aval_job: { type: Number, required: false },
-      body: {type:String, required:true},
+    //   body: {type:String, required:true},
       job_id: {
           type: mongoose.Schema.Types.ObjectId,
           ref: "job",
@@ -71,7 +71,7 @@ app.get("/jobs", async (req, res) => {
 
 
 //Company API------------------------
-app.post("/company", async (req, res) => {
+app.post("/companys", async (req, res) => {
     try {
       const company = await Company.create(req.body);
   
@@ -81,11 +81,11 @@ app.post("/company", async (req, res) => {
     }
   });
   
-  app.get("/company", async (req, res) => {
+  app.get("/companys", async (req, res) => {
     try {
-      const company = await Company.find().lean().exec();
+      const companys = await Company.find().lean().exec();
   
-      return res.send({ company });
+      return res.send( companys );
     } catch (e) {
       return res.status(500).json({ message: e.message, status: "Failed" });
     }
