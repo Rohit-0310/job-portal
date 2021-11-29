@@ -112,6 +112,19 @@ app.get("/jobs/:id", async (req, res) => {
   });
 
 
+  //Update----------------
+
+  app.patch("/jobs/:id", async (req, res) => {
+    try {
+      const job = await Job.findByIdAndUpdate(req.params.id, req.body, {new:true}).lean().exec();
+  
+      return res.status(200).send(job);
+    } catch (e) {
+      return res.status(500).json({ message: e.message, status: "Failed" });
+    }
+  });
+
+
 
 //Company API------------------------
 //post------------------
@@ -147,6 +160,17 @@ app.get("/companys/:id", async (req, res) => {
     }
   });
 
+  //Update----------------
+
+  app.patch("/companys/:id", async (req, res) => {
+    try {
+      const company = await Company.findByIdAndUpdate(req.params.id, req.body, {new:true}).lean().exec();
+  
+      return res.status(200).send(company);
+    } catch (e) {
+      return res.status(500).json({ message: e.message, status: "Failed" });
+    }
+  });
 
 
 
@@ -183,6 +207,18 @@ app.post("/citys", async (req, res) => {
     }
   });
 
+    //Update----------------
+
+    app.patch("/citys/:id", async (req, res) => {
+        try {
+          const city = await City.findByIdAndUpdate(req.params.id, req.body, {new:true}).lean().exec();
+      
+          return res.status(200).send(city);
+        } catch (e) {
+          return res.status(500).json({ message: e.message, status: "Failed" });
+        }
+      });
+    
 
 
 
